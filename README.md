@@ -1,4 +1,8 @@
 # Windows Caffe
+to compile the caffe in windows with vs 2017,please refer to the following links.
+https://blog.csdn.net/fengtaoO08/article/details/83023428
+https://blog.csdn.net/njnujuly/article/details/86155567
+
 
 **This is an experimental, community based branch led by Guillaume Dumont (@willyd). It is a work-in-progress.**
 
