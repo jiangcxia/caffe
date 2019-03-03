@@ -68,12 +68,12 @@ if DEFINED APPVEYOR (
 
 ) else (
     :: Change the settings here to match your setup
-    :: Change MSVC_VERSION to 12 to use VS 2013
-    if NOT DEFINED MSVC_VERSION set MSVC_VERSION=14
+    :: Change MSVC_VERSION to 12 to use VS 2013, 15 to use vs 2017
+    if NOT DEFINED MSVC_VERSION set MSVC_VERSION=15
     :: Change to 1 to use Ninja generator (builds much faster)
-    if NOT DEFINED WITH_NINJA set WITH_NINJA=1
+    if NOT DEFINED WITH_NINJA set WITH_NINJA=0
     :: Change to 1 to build caffe without CUDA support
-    if NOT DEFINED CPU_ONLY set CPU_ONLY=0
+    if NOT DEFINED CPU_ONLY set CPU_ONLY=1
     :: Change to generate CUDA code for one of the following GPU architectures
     :: [Fermi  Kepler  Maxwell  Pascal  All]
     if NOT DEFINED CUDA_ARCH_NAME set CUDA_ARCH_NAME=Auto
@@ -84,7 +84,7 @@ if DEFINED APPVEYOR (
     :: Change to 1 to build a caffe.dll
     if NOT DEFINED CMAKE_BUILD_SHARED_LIBS set CMAKE_BUILD_SHARED_LIBS=0
     :: Change to 3 if using python 3.5 (only 2.7 and 3.5 are supported)
-    if NOT DEFINED PYTHON_VERSION set PYTHON_VERSION=2
+    if NOT DEFINED PYTHON_VERSION set PYTHON_VERSION=3
     :: Change these options for your needs.
     if NOT DEFINED BUILD_PYTHON set BUILD_PYTHON=1
     if NOT DEFINED BUILD_PYTHON_LAYER set BUILD_PYTHON_LAYER=1
@@ -103,6 +103,9 @@ if DEFINED APPVEYOR (
 :: Use the exclamation mark ! below to delay the
 :: expansion of CMAKE_GENERATOR
 if %WITH_NINJA% EQU 0 (
+	if "%MSVC_VERSION%"=="15" (
+		set CMAKE_GENERATOR=Visual Studio 15 2017 Win64
+	)
     if "%MSVC_VERSION%"=="14" (
         set CMAKE_GENERATOR=Visual Studio 14 2015 Win64
     )
@@ -113,6 +116,8 @@ if %WITH_NINJA% EQU 0 (
         echo ERROR: Unsupported MSVC version
         exit /B 1
     )
+	
+
 ) else (
     set CMAKE_GENERATOR=Ninja
 )
